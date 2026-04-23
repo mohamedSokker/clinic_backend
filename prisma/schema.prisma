@@ -1,0 +1,187 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  doctor
+  patient
+  lab
+}
+
+enum ReservationStatus {
+  pending
+  confirmed
+  waiting
+  inside
+  done
+  cancelled
+  transferred
+  no_show
+}
+
+model User {
+  id        String   @id @default(uuid())
+  uid       String   @unique
+  email     String   @unique
+  role      UserRole
+  name      String
+  mobile    String
+  photoURL  String?
+  fcmToken  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  resetPasswordOtp      String?
+  resetPasswordExpires  DateTime?
+
+  patient   Patient?
+  doctor    Doctor?
+  lab       Lab?
+}
+
+model Patient {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @unique
+  dateOfBirth String?
+  bloodType   String?
+  reservations Reservation[]
+  diagnoses    Diagnosis[]
+}
+
+model Doctor {
+  id                  String   @id @default(uuid())
+  user                User     @relation(fields: [userId], references: [id])
+  userId              String   @unique
+  clinicName          String?
+  doctorName          String?
+  location            String?
+  specialization      String?
+  visitCost           Float    @default(0)
+  videoConsultCost    Float?
+  inPersonCost        Float?
+  about               String?
+  badgeTitle          String?  // e.g. "Senior Specialist"
+  yearsExperience     Int?     // e.g. 12
+  patientsCount       Int?     // e.g. 8500
+  successRate         Int?     // e.g. 99  (percentage)
+  specialties         String[] // tags e.g. ["Retinal Detachment", "Macular Hole"]
+  rating              Float    @default(0)
+  reviewCount         Int      @default(0)
+  subscriptionActive  Boolean  @default(false)
+  subscriptionExpiry  DateTime?
+  schedule            Json?    // Stores DoctorSchedule
+  workingDays         String[]
+  slotDurationMinutes Int      @default(30)
+  maxPatientsPerDay   Int?
+  
+  reservations        Reservation[]
+  diagnoses           Diagnosis[]
+  reviews             Review[]
+}
+
+model Lab {
+  id            String   @id @default(uuid())
+  user          User     @relation(fields: [userId], references: [id])
+  userId        String   @unique
+  labName       String
+  location      String
+  type          String   // e.g. Clinical, Radiology, Pathology
+  licenseNumber String?
+  analysisTypes String[]
+  partnershipLevel String @default("Standard")
+  
+  analysisFiles AnalysisFile[]
+}
+
+model Reservation {
+  id                String            @id @default(uuid())
+  doctorId          String
+  patientId         String
+  doctor            Doctor            @relation(fields: [doctorId], references: [id])
+  patient           Patient           @relation(fields: [patientId], references: [id])
+  dateTime          DateTime
+  status            ReservationStatus @default(pending)
+  queuePosition     Int
+  symptoms          String?
+  entryTime         DateTime?
+  exitTime          DateTime?
+  isEmergency       Boolean           @default(false)
+  transferredFromId String?
+  transferredToId   String?
+  cancelReason      String?
+  consultationNote  String?
+  createdAt         DateTime          @default(now())
+  diagnosis         Diagnosis?
+}
+
+model Diagnosis {
+  id              String   @id @default(uuid())
+  reservation     Reservation @relation(fields: [reservationId], references: [id])
+  reservationId   String   @unique
+  patient         Patient  @relation(fields: [patientId], references: [id])
+  patientId       String
+  doctor          Doctor   @relation(fields: [doctorId], references: [id])
+  doctorId        String
+  visitDate       DateTime
+  notes           String
+  prescriptions   String?
+  nextVisitDate   DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  vaccines        Vaccine[]
+  analysisFiles   AnalysisFile[]
+}
+
+model Vaccine {
+  id          String   @id @default(uuid())
+  diagnosis   Diagnosis @relation(fields: [diagnosisId], references: [id])
+  diagnosisId String
+  name        String
+  date        String   // ISO string
+  dose        String?
+  nextDueDate String?
+}
+
+model AnalysisFile {
+  id          String   @id @default(uuid())
+  diagnosis   Diagnosis @relation(fields: [diagnosisId], references: [id])
+  diagnosisId String
+  url         String
+  type        String   // image | pdf
+  fileName    String
+  lab         Lab?     @relation(fields: [labId], references: [id])
+  labId       String?
+  uploadedAt  DateTime @default(now())
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+  doctorId  String
+  patientId String
+  patientName String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  body      String
+  type      String
+  relatedId String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
