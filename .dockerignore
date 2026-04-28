@@ -1,0 +1,9 @@
+node_modules
+dist
+.env
+.git
+.gitignore
+README.md
+build_output.txt
+scratch
+*.log
