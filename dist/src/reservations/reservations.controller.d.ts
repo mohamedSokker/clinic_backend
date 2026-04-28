@@ -47,6 +47,7 @@ export declare class ReservationsController {
     findForLab(labId: string, date?: string): Promise<any>;
     updateStatus(id: string, statusData: any): Promise<{
         id: string;
+        createdAt: Date;
         doctorId: string | null;
         labId: string | null;
         patientId: string;
@@ -62,7 +63,6 @@ export declare class ReservationsController {
         transferredToId: string | null;
         cancelReason: string | null;
         consultationNote: string | null;
-        createdAt: Date;
         expectedTime: Date | null;
         tags: string[];
     }>;

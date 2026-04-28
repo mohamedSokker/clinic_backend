@@ -3,43 +3,51 @@ export declare class DiagnosisService {
     private prisma;
     constructor(prisma: PrismaService);
     create(userId: string, createDiagnosisDto: any): Promise<{
+        analysisFiles: {
+            id: string;
+            type: string;
+            uploadedAt: Date;
+            labId: string | null;
+            patientId: string | null;
+            diagnosisId: string | null;
+            url: string;
+            fileName: string;
+        }[];
         vaccines: {
             id: string;
             name: string;
+            diagnosisId: string;
             date: string;
             dose: string | null;
             nextDueDate: string | null;
-            diagnosisId: string;
-        }[];
-        analysisFiles: {
-            id: string;
-            patientId: string | null;
-            labId: string | null;
-            url: string;
-            type: string;
-            fileName: string;
-            uploadedAt: Date;
-            diagnosisId: string | null;
         }[];
     } & {
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        doctorId: string;
+        patientId: string;
+        reservationId: string;
         visitDate: Date;
         notes: string;
         prescriptions: string | null;
         nextVisitDate: Date | null;
-        createdAt: Date;
-        updatedAt: Date;
-        reservationId: string;
-        patientId: string;
-        doctorId: string;
     }>;
     findForPatient(patientUserId: string, page?: number, perPage?: number): Promise<{
         diagnoses: ({
+            analysisFiles: {
+                id: string;
+                type: string;
+                uploadedAt: Date;
+                labId: string | null;
+                patientId: string | null;
+                diagnosisId: string | null;
+                url: string;
+                fileName: string;
+            }[];
             doctor: {
                 user: {
                     id: string;
-                    createdAt: Date;
-                    updatedAt: Date;
                     name: string;
                     uid: string;
                     email: string;
@@ -47,6 +55,8 @@ export declare class DiagnosisService {
                     mobile: string;
                     photoURL: string | null;
                     fcmToken: string | null;
+                    createdAt: Date;
+                    updatedAt: Date;
                     resetPasswordOtp: string | null;
                     resetPasswordExpires: Date | null;
                 };
@@ -80,32 +90,22 @@ export declare class DiagnosisService {
             vaccines: {
                 id: string;
                 name: string;
+                diagnosisId: string;
                 date: string;
                 dose: string | null;
                 nextDueDate: string | null;
-                diagnosisId: string;
-            }[];
-            analysisFiles: {
-                id: string;
-                patientId: string | null;
-                labId: string | null;
-                url: string;
-                type: string;
-                fileName: string;
-                uploadedAt: Date;
-                diagnosisId: string | null;
             }[];
         } & {
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            doctorId: string;
+            patientId: string;
+            reservationId: string;
             visitDate: Date;
             notes: string;
             prescriptions: string | null;
             nextVisitDate: Date | null;
-            createdAt: Date;
-            updatedAt: Date;
-            reservationId: string;
-            patientId: string;
-            doctorId: string;
         })[];
         total: number;
         page: number;
@@ -113,11 +113,19 @@ export declare class DiagnosisService {
         totalPages: number;
     }>;
     findForSpecificPatient(patientId: string): Promise<({
+        analysisFiles: {
+            id: string;
+            type: string;
+            uploadedAt: Date;
+            labId: string | null;
+            patientId: string | null;
+            diagnosisId: string | null;
+            url: string;
+            fileName: string;
+        }[];
         doctor: {
             user: {
                 id: string;
-                createdAt: Date;
-                updatedAt: Date;
                 name: string;
                 uid: string;
                 email: string;
@@ -125,6 +133,8 @@ export declare class DiagnosisService {
                 mobile: string;
                 photoURL: string | null;
                 fcmToken: string | null;
+                createdAt: Date;
+                updatedAt: Date;
                 resetPasswordOtp: string | null;
                 resetPasswordExpires: Date | null;
             };
@@ -158,40 +168,38 @@ export declare class DiagnosisService {
         vaccines: {
             id: string;
             name: string;
+            diagnosisId: string;
             date: string;
             dose: string | null;
             nextDueDate: string | null;
-            diagnosisId: string;
-        }[];
-        analysisFiles: {
-            id: string;
-            patientId: string | null;
-            labId: string | null;
-            url: string;
-            type: string;
-            fileName: string;
-            uploadedAt: Date;
-            diagnosisId: string | null;
         }[];
     } & {
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        doctorId: string;
+        patientId: string;
+        reservationId: string;
         visitDate: Date;
         notes: string;
         prescriptions: string | null;
         nextVisitDate: Date | null;
-        createdAt: Date;
-        updatedAt: Date;
-        reservationId: string;
-        patientId: string;
-        doctorId: string;
     })[]>;
     findForSpecificPatientPaginated(patientId: string, page?: number, perPage?: number): Promise<{
         diagnoses: ({
+            analysisFiles: {
+                id: string;
+                type: string;
+                uploadedAt: Date;
+                labId: string | null;
+                patientId: string | null;
+                diagnosisId: string | null;
+                url: string;
+                fileName: string;
+            }[];
             doctor: {
                 user: {
                     id: string;
-                    createdAt: Date;
-                    updatedAt: Date;
                     name: string;
                     uid: string;
                     email: string;
@@ -199,6 +207,8 @@ export declare class DiagnosisService {
                     mobile: string;
                     photoURL: string | null;
                     fcmToken: string | null;
+                    createdAt: Date;
+                    updatedAt: Date;
                     resetPasswordOtp: string | null;
                     resetPasswordExpires: Date | null;
                 };
@@ -232,32 +242,22 @@ export declare class DiagnosisService {
             vaccines: {
                 id: string;
                 name: string;
+                diagnosisId: string;
                 date: string;
                 dose: string | null;
                 nextDueDate: string | null;
-                diagnosisId: string;
-            }[];
-            analysisFiles: {
-                id: string;
-                patientId: string | null;
-                labId: string | null;
-                url: string;
-                type: string;
-                fileName: string;
-                uploadedAt: Date;
-                diagnosisId: string | null;
             }[];
         } & {
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            doctorId: string;
+            patientId: string;
+            reservationId: string;
             visitDate: Date;
             notes: string;
             prescriptions: string | null;
             nextVisitDate: Date | null;
-            createdAt: Date;
-            updatedAt: Date;
-            reservationId: string;
-            patientId: string;
-            doctorId: string;
         })[];
         total: number;
         page: number;
@@ -266,43 +266,43 @@ export declare class DiagnosisService {
     }>;
     addAnalysisFile(labUserId: string, fileData: any): Promise<{
         id: string;
-        patientId: string | null;
-        labId: string | null;
-        url: string;
         type: string;
-        fileName: string;
         uploadedAt: Date;
+        labId: string | null;
+        patientId: string | null;
         diagnosisId: string | null;
+        url: string;
+        fileName: string;
     }>;
     findByReservation(reservationId: string): Promise<({
+        analysisFiles: {
+            id: string;
+            type: string;
+            uploadedAt: Date;
+            labId: string | null;
+            patientId: string | null;
+            diagnosisId: string | null;
+            url: string;
+            fileName: string;
+        }[];
         vaccines: {
             id: string;
             name: string;
+            diagnosisId: string;
             date: string;
             dose: string | null;
             nextDueDate: string | null;
-            diagnosisId: string;
-        }[];
-        analysisFiles: {
-            id: string;
-            patientId: string | null;
-            labId: string | null;
-            url: string;
-            type: string;
-            fileName: string;
-            uploadedAt: Date;
-            diagnosisId: string | null;
         }[];
     } & {
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        doctorId: string;
+        patientId: string;
+        reservationId: string;
         visitDate: Date;
         notes: string;
         prescriptions: string | null;
         nextVisitDate: Date | null;
-        createdAt: Date;
-        updatedAt: Date;
-        reservationId: string;
-        patientId: string;
-        doctorId: string;
     }) | null>;
 }

@@ -4,10 +4,10 @@ export declare class UsersService {
     constructor(prisma: PrismaService);
     create(createUserDto: any): Promise<{
         id: string;
+        name: string;
         uid: string;
         email: string;
         role: import("@prisma/client").$Enums.UserRole;
-        name: string;
         mobile: string;
         photoURL: string | null;
         fcmToken: string | null;
@@ -17,25 +17,43 @@ export declare class UsersService {
         resetPasswordExpires: Date | null;
     }>;
     findByUid(uid: string): Promise<{
+        lab: {
+            id: string;
+            userId: string;
+            labName: string;
+            location: string;
+            type: string;
+            licenseNumber: string | null;
+            analysisTypes: import("@prisma/client/runtime/library").JsonValue | null;
+            partnershipLevel: string;
+            latitude: number | null;
+            longitude: number | null;
+            isAvailable: boolean;
+            workingHours: import("@prisma/client/runtime/library").JsonValue | null;
+            accuracy: number;
+            avgTurnaroundTime: number;
+            description: string | null;
+            certifications: import("@prisma/client/runtime/library").JsonValue | null;
+        } | null;
         patient: ({
             analysisFiles: {
                 id: string;
                 type: string;
                 uploadedAt: Date;
-                diagnosisId: string | null;
+                labId: string | null;
                 patientId: string | null;
+                diagnosisId: string | null;
                 url: string;
                 fileName: string;
-                labId: string | null;
             }[];
         } & {
             id: string;
             userId: string;
-            dateOfBirth: string | null;
-            bloodType: string | null;
             location: string | null;
             latitude: number | null;
             longitude: number | null;
+            dateOfBirth: string | null;
+            bloodType: string | null;
             bloodPressure: string | null;
             heartRate: string | null;
             glucose: string | null;
@@ -74,30 +92,12 @@ export declare class UsersService {
             slotDurationMinutes: number;
             maxPatientsPerDay: number | null;
         } | null;
-        lab: {
-            id: string;
-            userId: string;
-            location: string;
-            latitude: number | null;
-            longitude: number | null;
-            labName: string;
-            type: string;
-            licenseNumber: string | null;
-            analysisTypes: import("@prisma/client/runtime/library").JsonValue | null;
-            partnershipLevel: string;
-            isAvailable: boolean;
-            workingHours: import("@prisma/client/runtime/library").JsonValue | null;
-            accuracy: number;
-            avgTurnaroundTime: number;
-            description: string | null;
-            certifications: import("@prisma/client/runtime/library").JsonValue | null;
-        } | null;
     } & {
         id: string;
+        name: string;
         uid: string;
         email: string;
         role: import("@prisma/client").$Enums.UserRole;
-        name: string;
         mobile: string;
         photoURL: string | null;
         fcmToken: string | null;
@@ -107,14 +107,32 @@ export declare class UsersService {
         resetPasswordExpires: Date | null;
     }>;
     update(uid: string, updateUserDto: any): Promise<{
+        lab: {
+            id: string;
+            userId: string;
+            labName: string;
+            location: string;
+            type: string;
+            licenseNumber: string | null;
+            analysisTypes: import("@prisma/client/runtime/library").JsonValue | null;
+            partnershipLevel: string;
+            latitude: number | null;
+            longitude: number | null;
+            isAvailable: boolean;
+            workingHours: import("@prisma/client/runtime/library").JsonValue | null;
+            accuracy: number;
+            avgTurnaroundTime: number;
+            description: string | null;
+            certifications: import("@prisma/client/runtime/library").JsonValue | null;
+        } | null;
         patient: {
             id: string;
             userId: string;
-            dateOfBirth: string | null;
-            bloodType: string | null;
             location: string | null;
             latitude: number | null;
             longitude: number | null;
+            dateOfBirth: string | null;
+            bloodType: string | null;
             bloodPressure: string | null;
             heartRate: string | null;
             glucose: string | null;
@@ -153,30 +171,12 @@ export declare class UsersService {
             slotDurationMinutes: number;
             maxPatientsPerDay: number | null;
         } | null;
-        lab: {
-            id: string;
-            userId: string;
-            location: string;
-            latitude: number | null;
-            longitude: number | null;
-            labName: string;
-            type: string;
-            licenseNumber: string | null;
-            analysisTypes: import("@prisma/client/runtime/library").JsonValue | null;
-            partnershipLevel: string;
-            isAvailable: boolean;
-            workingHours: import("@prisma/client/runtime/library").JsonValue | null;
-            accuracy: number;
-            avgTurnaroundTime: number;
-            description: string | null;
-            certifications: import("@prisma/client/runtime/library").JsonValue | null;
-        } | null;
     } & {
         id: string;
+        name: string;
         uid: string;
         email: string;
         role: import("@prisma/client").$Enums.UserRole;
-        name: string;
         mobile: string;
         photoURL: string | null;
         fcmToken: string | null;
@@ -187,10 +187,10 @@ export declare class UsersService {
     }>;
     updateFcmToken(uid: string, fcmToken: string): Promise<{
         id: string;
+        name: string;
         uid: string;
         email: string;
         role: import("@prisma/client").$Enums.UserRole;
-        name: string;
         mobile: string;
         photoURL: string | null;
         fcmToken: string | null;
@@ -221,14 +221,14 @@ export declare class UsersService {
             lab: {
                 id: string;
                 userId: string;
-                location: string;
-                latitude: number | null;
-                longitude: number | null;
                 labName: string;
+                location: string;
                 type: string;
                 licenseNumber: string | null;
                 analysisTypes: import("@prisma/client/runtime/library").JsonValue | null;
                 partnershipLevel: string;
+                latitude: number | null;
+                longitude: number | null;
                 isAvailable: boolean;
                 workingHours: import("@prisma/client/runtime/library").JsonValue | null;
                 accuracy: number;
@@ -268,9 +268,9 @@ export declare class UsersService {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                doctorId: string;
                 patientId: string;
                 reservationId: string;
-                doctorId: string;
                 visitDate: Date;
                 notes: string;
                 prescriptions: string | null;
@@ -280,11 +280,11 @@ export declare class UsersService {
             id: string;
             type: string;
             uploadedAt: Date;
-            diagnosisId: string | null;
+            labId: string | null;
             patientId: string | null;
+            diagnosisId: string | null;
             url: string;
             fileName: string;
-            labId: string | null;
         })[];
         total: number;
         page: number;
@@ -299,14 +299,14 @@ export declare class UsersService {
             lab: {
                 id: string;
                 userId: string;
-                location: string;
-                latitude: number | null;
-                longitude: number | null;
                 labName: string;
+                location: string;
                 type: string;
                 licenseNumber: string | null;
                 analysisTypes: import("@prisma/client/runtime/library").JsonValue | null;
                 partnershipLevel: string;
+                latitude: number | null;
+                longitude: number | null;
                 isAvailable: boolean;
                 workingHours: import("@prisma/client/runtime/library").JsonValue | null;
                 accuracy: number;
@@ -346,9 +346,9 @@ export declare class UsersService {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                doctorId: string;
                 patientId: string;
                 reservationId: string;
-                doctorId: string;
                 visitDate: Date;
                 notes: string;
                 prescriptions: string | null;
@@ -358,11 +358,11 @@ export declare class UsersService {
             id: string;
             type: string;
             uploadedAt: Date;
-            diagnosisId: string | null;
+            labId: string | null;
             patientId: string | null;
+            diagnosisId: string | null;
             url: string;
             fileName: string;
-            labId: string | null;
         })[];
         total: number;
         page: number;
@@ -373,21 +373,21 @@ export declare class UsersService {
         id: string;
         type: string;
         uploadedAt: Date;
-        diagnosisId: string | null;
+        labId: string | null;
         patientId: string | null;
+        diagnosisId: string | null;
         url: string;
         fileName: string;
-        labId: string | null;
     }>;
     getPatientFullProfile(patientId: string): Promise<{
         profile: {
             patient: {
                 user: {
                     id: string;
+                    name: string;
                     uid: string;
                     email: string;
                     role: import("@prisma/client").$Enums.UserRole;
-                    name: string;
                     mobile: string;
                     photoURL: string | null;
                     fcmToken: string | null;
@@ -400,20 +400,20 @@ export declare class UsersService {
                     id: string;
                     type: string;
                     uploadedAt: Date;
-                    diagnosisId: string | null;
+                    labId: string | null;
                     patientId: string | null;
+                    diagnosisId: string | null;
                     url: string;
                     fileName: string;
-                    labId: string | null;
                 }[];
             } & {
                 id: string;
                 userId: string;
-                dateOfBirth: string | null;
-                bloodType: string | null;
                 location: string | null;
                 latitude: number | null;
                 longitude: number | null;
+                dateOfBirth: string | null;
+                bloodType: string | null;
                 bloodPressure: string | null;
                 heartRate: string | null;
                 glucose: string | null;
@@ -426,10 +426,10 @@ export declare class UsersService {
                 chronicConditions: string[];
             };
             id: string;
+            name: string;
             uid: string;
             email: string;
             role: import("@prisma/client").$Enums.UserRole;
-            name: string;
             mobile: string;
             photoURL: string | null;
             fcmToken: string | null;
@@ -439,13 +439,46 @@ export declare class UsersService {
             resetPasswordExpires: Date | null;
         };
         reservations: ({
-            doctor: ({
+            lab: ({
                 user: {
                     id: string;
+                    name: string;
                     uid: string;
                     email: string;
                     role: import("@prisma/client").$Enums.UserRole;
+                    mobile: string;
+                    photoURL: string | null;
+                    fcmToken: string | null;
+                    createdAt: Date;
+                    updatedAt: Date;
+                    resetPasswordOtp: string | null;
+                    resetPasswordExpires: Date | null;
+                };
+            } & {
+                id: string;
+                userId: string;
+                labName: string;
+                location: string;
+                type: string;
+                licenseNumber: string | null;
+                analysisTypes: import("@prisma/client/runtime/library").JsonValue | null;
+                partnershipLevel: string;
+                latitude: number | null;
+                longitude: number | null;
+                isAvailable: boolean;
+                workingHours: import("@prisma/client/runtime/library").JsonValue | null;
+                accuracy: number;
+                avgTurnaroundTime: number;
+                description: string | null;
+                certifications: import("@prisma/client/runtime/library").JsonValue | null;
+            }) | null;
+            doctor: ({
+                user: {
+                    id: string;
                     name: string;
+                    uid: string;
+                    email: string;
+                    role: import("@prisma/client").$Enums.UserRole;
                     mobile: string;
                     photoURL: string | null;
                     fcmToken: string | null;
@@ -481,45 +514,12 @@ export declare class UsersService {
                 slotDurationMinutes: number;
                 maxPatientsPerDay: number | null;
             }) | null;
-            lab: ({
-                user: {
-                    id: string;
-                    uid: string;
-                    email: string;
-                    role: import("@prisma/client").$Enums.UserRole;
-                    name: string;
-                    mobile: string;
-                    photoURL: string | null;
-                    fcmToken: string | null;
-                    createdAt: Date;
-                    updatedAt: Date;
-                    resetPasswordOtp: string | null;
-                    resetPasswordExpires: Date | null;
-                };
-            } & {
-                id: string;
-                userId: string;
-                location: string;
-                latitude: number | null;
-                longitude: number | null;
-                labName: string;
-                type: string;
-                licenseNumber: string | null;
-                analysisTypes: import("@prisma/client/runtime/library").JsonValue | null;
-                partnershipLevel: string;
-                isAvailable: boolean;
-                workingHours: import("@prisma/client/runtime/library").JsonValue | null;
-                accuracy: number;
-                avgTurnaroundTime: number;
-                description: string | null;
-                certifications: import("@prisma/client/runtime/library").JsonValue | null;
-            }) | null;
         } & {
             id: string;
             createdAt: Date;
-            patientId: string;
-            labId: string | null;
             doctorId: string | null;
+            labId: string | null;
+            patientId: string;
             dateTime: Date;
             status: import("@prisma/client").$Enums.ReservationStatus;
             queuePosition: number;
@@ -536,13 +536,42 @@ export declare class UsersService {
             tags: string[];
         })[];
         diagnoses: ({
+            analysisFiles: ({
+                lab: {
+                    id: string;
+                    userId: string;
+                    labName: string;
+                    location: string;
+                    type: string;
+                    licenseNumber: string | null;
+                    analysisTypes: import("@prisma/client/runtime/library").JsonValue | null;
+                    partnershipLevel: string;
+                    latitude: number | null;
+                    longitude: number | null;
+                    isAvailable: boolean;
+                    workingHours: import("@prisma/client/runtime/library").JsonValue | null;
+                    accuracy: number;
+                    avgTurnaroundTime: number;
+                    description: string | null;
+                    certifications: import("@prisma/client/runtime/library").JsonValue | null;
+                } | null;
+            } & {
+                id: string;
+                type: string;
+                uploadedAt: Date;
+                labId: string | null;
+                patientId: string | null;
+                diagnosisId: string | null;
+                url: string;
+                fileName: string;
+            })[];
             doctor: {
                 user: {
                     id: string;
+                    name: string;
                     uid: string;
                     email: string;
                     role: import("@prisma/client").$Enums.UserRole;
-                    name: string;
                     mobile: string;
                     photoURL: string | null;
                     fcmToken: string | null;
@@ -578,35 +607,6 @@ export declare class UsersService {
                 slotDurationMinutes: number;
                 maxPatientsPerDay: number | null;
             };
-            analysisFiles: ({
-                lab: {
-                    id: string;
-                    userId: string;
-                    location: string;
-                    latitude: number | null;
-                    longitude: number | null;
-                    labName: string;
-                    type: string;
-                    licenseNumber: string | null;
-                    analysisTypes: import("@prisma/client/runtime/library").JsonValue | null;
-                    partnershipLevel: string;
-                    isAvailable: boolean;
-                    workingHours: import("@prisma/client/runtime/library").JsonValue | null;
-                    accuracy: number;
-                    avgTurnaroundTime: number;
-                    description: string | null;
-                    certifications: import("@prisma/client/runtime/library").JsonValue | null;
-                } | null;
-            } & {
-                id: string;
-                type: string;
-                uploadedAt: Date;
-                diagnosisId: string | null;
-                patientId: string | null;
-                url: string;
-                fileName: string;
-                labId: string | null;
-            })[];
             vaccines: {
                 id: string;
                 name: string;
@@ -619,9 +619,9 @@ export declare class UsersService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            doctorId: string;
             patientId: string;
             reservationId: string;
-            doctorId: string;
             visitDate: Date;
             notes: string;
             prescriptions: string | null;
