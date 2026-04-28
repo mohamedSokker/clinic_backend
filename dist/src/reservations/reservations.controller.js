@@ -30,11 +30,26 @@ let ReservationsController = class ReservationsController {
         }
         return this.reservationsService.findForDoctor(req.user.uid, date, false);
     }
+    findPaginatedForDoctor(req, date, page = '1', perPage = '3', nextOnly) {
+        return this.reservationsService.findPaginatedForDoctor(req.user.uid, date, parseInt(page), parseInt(perPage), nextOnly === 'true');
+    }
     findForPatient(req) {
         return this.reservationsService.findForPatient(req.user.uid);
     }
     findUpcomingForPatient(req) {
         return this.reservationsService.findUpcomingForPatient(req.user.uid);
+    }
+    findPaginatedForPatient(req, page = '1', perPage = '3') {
+        return this.reservationsService.findPaginatedForPatient(req.user.uid, parseInt(page), parseInt(perPage));
+    }
+    getLiveQueueForPatient(req, doctorId) {
+        return this.reservationsService.getLiveQueueForPatient(req.user.uid, doctorId);
+    }
+    findOne(id) {
+        return this.reservationsService.findOne(id);
+    }
+    findForLab(labId, date) {
+        return this.reservationsService.findForLab(labId, date);
     }
     updateStatus(id, statusData) {
         return this.reservationsService.updateStatus(id, statusData);
@@ -59,6 +74,17 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ReservationsController.prototype, "findForDoctor", null);
 __decorate([
+    (0, common_1.Get)('doctor/paginated'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Query)('date')),
+    __param(2, (0, common_1.Query)('page')),
+    __param(3, (0, common_1.Query)('per_page')),
+    __param(4, (0, common_1.Query)('next_only')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, String, String, String]),
+    __metadata("design:returntype", void 0)
+], ReservationsController.prototype, "findPaginatedForDoctor", null);
+__decorate([
     (0, common_1.Get)('patient'),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -72,6 +98,38 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], ReservationsController.prototype, "findUpcomingForPatient", null);
+__decorate([
+    (0, common_1.Get)('patient/paginated'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('per_page')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, String]),
+    __metadata("design:returntype", void 0)
+], ReservationsController.prototype, "findPaginatedForPatient", null);
+__decorate([
+    (0, common_1.Get)('patient/live-queue'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Query)('doctorId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", void 0)
+], ReservationsController.prototype, "getLiveQueueForPatient", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ReservationsController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)('lab/:labId'),
+    __param(0, (0, common_1.Param)('labId')),
+    __param(1, (0, common_1.Query)('date')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], ReservationsController.prototype, "findForLab", null);
 __decorate([
     (0, common_1.Patch)(':id/status'),
     __param(0, (0, common_1.Param)('id')),

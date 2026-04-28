@@ -24,11 +24,20 @@ let DiagnosisController = class DiagnosisController {
     create(req, createDiagnosisDto) {
         return this.diagnosisService.create(req.user.uid, createDiagnosisDto);
     }
-    findForPatient(req) {
-        return this.diagnosisService.findForPatient(req.user.uid);
+    findForPatient(req, page = '1', perPage = '3') {
+        return this.diagnosisService.findForPatient(req.user.uid, parseInt(page), parseInt(perPage));
+    }
+    findForSpecificPatient(patientId) {
+        return this.diagnosisService.findForSpecificPatient(patientId);
+    }
+    findForSpecificPatientPaginated(patientId, page = '1', perPage = '10') {
+        return this.diagnosisService.findForSpecificPatientPaginated(patientId, parseInt(page), parseInt(perPage));
     }
     addAnalysisFile(req, fileData) {
         return this.diagnosisService.addAnalysisFile(req.user.uid, fileData);
+    }
+    findByReservation(reservationId) {
+        return this.diagnosisService.findByReservation(reservationId);
     }
 };
 exports.DiagnosisController = DiagnosisController;
@@ -43,10 +52,28 @@ __decorate([
 __decorate([
     (0, common_1.Get)('patient'),
     __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('per_page')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, String, String]),
     __metadata("design:returntype", void 0)
 ], DiagnosisController.prototype, "findForPatient", null);
+__decorate([
+    (0, common_1.Get)('patient/:patientId'),
+    __param(0, (0, common_1.Param)('patientId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], DiagnosisController.prototype, "findForSpecificPatient", null);
+__decorate([
+    (0, common_1.Get)('patient/:patientId/paginated'),
+    __param(0, (0, common_1.Param)('patientId')),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('per_page')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:returntype", void 0)
+], DiagnosisController.prototype, "findForSpecificPatientPaginated", null);
 __decorate([
     (0, common_1.Post)('analysis'),
     __param(0, (0, common_1.Req)()),
@@ -55,6 +82,13 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], DiagnosisController.prototype, "addAnalysisFile", null);
+__decorate([
+    (0, common_1.Get)('reservation/:reservationId'),
+    __param(0, (0, common_1.Param)('reservationId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], DiagnosisController.prototype, "findByReservation", null);
 exports.DiagnosisController = DiagnosisController = __decorate([
     (0, common_1.Controller)('diagnosis'),
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),

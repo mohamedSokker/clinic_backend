@@ -46,11 +46,15 @@ exports.FirebaseService = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const admin = __importStar(require("firebase-admin"));
+const dns_1 = require("dns");
 let FirebaseService = class FirebaseService {
     configService;
     firebaseApp;
     constructor(configService) {
         this.configService = configService;
+        if (typeof dns_1.setDefaultResultOrder === 'function') {
+            (0, dns_1.setDefaultResultOrder)('ipv4first');
+        }
     }
     onModuleInit() {
         const serviceAccount = {

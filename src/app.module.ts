@@ -15,9 +15,12 @@ import { PaymentsModule } from './payments/payments.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
+import { LabsModule } from './labs/labs.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', 'uploads'),
@@ -34,6 +37,7 @@ import { MailModule } from './mail/mail.module';
     UploadsModule,
     AuthModule,
     MailModule,
+    LabsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -10,13 +10,14 @@ exports.ReservationsModule = void 0;
 const common_1 = require("@nestjs/common");
 const reservations_service_1 = require("./reservations.service");
 const reservations_controller_1 = require("./reservations.controller");
+const reservations_tasks_1 = require("./reservations.tasks");
 let ReservationsModule = class ReservationsModule {
 };
 exports.ReservationsModule = ReservationsModule;
 exports.ReservationsModule = ReservationsModule = __decorate([
     (0, common_1.Module)({
         controllers: [reservations_controller_1.ReservationsController],
-        providers: [reservations_service_1.ReservationsService],
+        providers: [reservations_service_1.ReservationsService, reservations_tasks_1.ReservationsTasks],
     })
 ], ReservationsModule);
 //# sourceMappingURL=reservations.module.js.map

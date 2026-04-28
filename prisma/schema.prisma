@@ -53,8 +53,27 @@ model Patient {
   userId      String   @unique
   dateOfBirth String?
   bloodType   String?
+  location    String?
+  latitude    Float?
+  longitude   Float?
+  
+  // Vitals
+  bloodPressure String?  // e.g. "120/80"
+  heartRate     String?  // e.g. "72"
+  glucose       String?  // e.g. "140"
+  spo2          String?  // e.g. "98"
+  
+  // Demographics
+  age           String?
+  gender        String?
+  weight        Float?
+  height        Float?
+  allergies     String[]
+  chronicConditions String[]
+  
   reservations Reservation[]
   diagnoses    Diagnosis[]
+  analysisFiles AnalysisFile[]
 }
 
 model Doctor {
@@ -82,6 +101,8 @@ model Doctor {
   workingDays         String[]
   slotDurationMinutes Int      @default(30)
   maxPatientsPerDay   Int?
+  latitude            Float?
+  longitude           Float?
   
   reservations        Reservation[]
   diagnoses           Diagnosis[]
@@ -96,21 +117,47 @@ model Lab {
   location      String
   type          String   // e.g. Clinical, Radiology, Pathology
   licenseNumber String?
-  analysisTypes String[]
+  analysisTypes    Json?    // Array of { name: string, cost: number }
   partnershipLevel String @default("Standard")
+  latitude         Float?
+  longitude        Float?
   
+  isAvailable      Boolean  @default(true)
+  workingHours     Json?    // Weekly availability
+  
+  accuracy         Float    @default(99.0)
+  avgTurnaroundTime Int     @default(45) // in minutes
+  description      String?  @db.Text
+  certifications   Json?    // e.g. { "ISO 15189": "Active", "CLIA": "Active" }
+  
+  crew          LabCrew[]
   analysisFiles AnalysisFile[]
+  reservations  Reservation[]
+}
+
+model LabCrew {
+  id        String   @id @default(uuid())
+  lab       Lab      @relation(fields: [labId], references: [id])
+  labId     String
+  name      String
+  role      String
+  photoURL  String?
+  status    String   @default("active")
+  createdAt DateTime @default(now())
 }
 
 model Reservation {
   id                String            @id @default(uuid())
-  doctorId          String
+  doctorId          String?
+  labId             String?
   patientId         String
-  doctor            Doctor            @relation(fields: [doctorId], references: [id])
+  doctor            Doctor?           @relation(fields: [doctorId], references: [id])
+  lab               Lab?              @relation(fields: [labId], references: [id])
   patient           Patient           @relation(fields: [patientId], references: [id])
   dateTime          DateTime
   status            ReservationStatus @default(pending)
   queuePosition     Int
+  selectedTest      String?           // For lab reservations
   symptoms          String?
   entryTime         DateTime?
   exitTime          DateTime?
@@ -120,6 +167,8 @@ model Reservation {
   cancelReason      String?
   consultationNote  String?
   createdAt         DateTime          @default(now())
+  expectedTime      DateTime?
+  tags              String[]
   diagnosis         Diagnosis?
 }
 
@@ -154,8 +203,10 @@ model Vaccine {
 
 model AnalysisFile {
   id          String   @id @default(uuid())
-  diagnosis   Diagnosis @relation(fields: [diagnosisId], references: [id])
-  diagnosisId String
+  diagnosis   Diagnosis? @relation(fields: [diagnosisId], references: [id])
+  diagnosisId String?
+  patient     Patient?  @relation(fields: [patientId], references: [id])
+  patientId   String?
   url         String
   type        String   // image | pdf
   fileName    String

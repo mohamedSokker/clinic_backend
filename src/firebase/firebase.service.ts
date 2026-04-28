@@ -2,11 +2,18 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as admin from 'firebase-admin';
 
+import { setDefaultResultOrder } from 'dns';
+
 @Injectable()
 export class FirebaseService implements OnModuleInit {
   private firebaseApp: admin.app.App;
 
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService) {
+    // Force IPv4 first to avoid ETIMEDOUT issues with Google/Firebase APIs
+    if (typeof setDefaultResultOrder === 'function') {
+      setDefaultResultOrder('ipv4first');
+    }
+  }
 
   onModuleInit() {
     const serviceAccount = {

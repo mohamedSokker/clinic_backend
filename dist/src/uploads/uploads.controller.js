@@ -47,8 +47,8 @@ __decorate([
             },
         }),
         fileFilter: (req, file, callback) => {
-            if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-                return callback(new common_1.BadRequestException('Only image files are allowed!'), false);
+            if (!file.originalname.match(/\.(jpg|jpeg|png|gif|pdf)$/)) {
+                return callback(new common_1.BadRequestException('Only image and PDF files are allowed!'), false);
             }
             callback(null, true);
         },

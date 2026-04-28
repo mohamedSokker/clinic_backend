@@ -17,8 +17,8 @@ let DoctorsService = class DoctorsService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async findAll(specialization, query) {
-        return this.prisma.doctor.findMany({
+    async findAll(specialization, query, lat, lng, radius) {
+        const doctors = await this.prisma.doctor.findMany({
             where: {
                 AND: [
                     specialization ? { specialization } : {},
@@ -37,6 +37,17 @@ let DoctorsService = class DoctorsService {
                 user: true,
             },
         });
+        if (lat !== undefined && lng !== undefined && radius !== undefined) {
+            const { calculateDistance } = require('../common/utils/geo');
+            return doctors.filter((doctor) => {
+                if (doctor.latitude && doctor.longitude) {
+                    const dist = calculateDistance(lat, lng, doctor.latitude, doctor.longitude);
+                    return dist <= radius;
+                }
+                return false;
+            });
+        }
+        return doctors;
     }
     async findOne(id) {
         const doctor = await this.prisma.doctor.findUnique({

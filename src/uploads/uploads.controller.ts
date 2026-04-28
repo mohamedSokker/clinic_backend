@@ -41,9 +41,9 @@ export class UploadsController {
         file: Express.Multer.File,
         callback: (error: Error | null, acceptFile: boolean) => void,
       ) => {
-        if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|gif|pdf)$/)) {
           return callback(
-            new BadRequestException('Only image files are allowed!'),
+            new BadRequestException('Only image and PDF files are allowed!'),
             false,
           );
         }

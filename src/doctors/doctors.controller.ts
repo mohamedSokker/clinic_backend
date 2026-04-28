@@ -21,8 +21,17 @@ export class DoctorsController {
   findAll(
     @Query('specialization') specialization?: string,
     @Query('query') query?: string,
+    @Query('lat') lat?: string,
+    @Query('lng') lng?: string,
+    @Query('radius') radius?: string,
   ) {
-    return this.doctorsService.findAll(specialization, query);
+    return this.doctorsService.findAll(
+      specialization,
+      query,
+      lat ? parseFloat(lat) : undefined,
+      lng ? parseFloat(lng) : undefined,
+      radius ? parseFloat(radius) : undefined,
+    );
   }
 
   @Get(':id')

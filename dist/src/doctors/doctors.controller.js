@@ -21,8 +21,8 @@ let DoctorsController = class DoctorsController {
     constructor(doctorsService) {
         this.doctorsService = doctorsService;
     }
-    findAll(specialization, query) {
-        return this.doctorsService.findAll(specialization, query);
+    findAll(specialization, query, lat, lng, radius) {
+        return this.doctorsService.findAll(specialization, query, lat ? parseFloat(lat) : undefined, lng ? parseFloat(lng) : undefined, radius ? parseFloat(radius) : undefined);
     }
     findOne(id) {
         return this.doctorsService.findOne(id);
@@ -39,8 +39,11 @@ __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)('specialization')),
     __param(1, (0, common_1.Query)('query')),
+    __param(2, (0, common_1.Query)('lat')),
+    __param(3, (0, common_1.Query)('lng')),
+    __param(4, (0, common_1.Query)('radius')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, String, String, String, String]),
     __metadata("design:returntype", void 0)
 ], DoctorsController.prototype, "findAll", null);
 __decorate([

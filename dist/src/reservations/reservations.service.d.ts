@@ -1,262 +1,73 @@
 import { PrismaService } from '../prisma/prisma.service';
+import { NotificationsService } from '../notifications/notifications.service';
 export declare class ReservationsService {
     private prisma;
-    constructor(prisma: PrismaService);
-    create(userId: string, createReservationDto: any): Promise<{
-        patient: {
-            user: {
-                uid: string;
-                email: string;
-                role: import("@prisma/client").$Enums.UserRole;
-                name: string;
-                mobile: string;
-                photoURL: string | null;
-                id: string;
-                fcmToken: string | null;
-                createdAt: Date;
-                updatedAt: Date;
-                resetPasswordOtp: string | null;
-                resetPasswordExpires: Date | null;
-            };
-        } & {
-            id: string;
-            userId: string;
-            dateOfBirth: string | null;
-            bloodType: string | null;
-        };
-        doctor: {
-            id: string;
-            userId: string;
-            clinicName: string | null;
-            doctorName: string | null;
-            location: string | null;
-            specialization: string | null;
-            visitCost: number;
-            videoConsultCost: number | null;
-            inPersonCost: number | null;
-            about: string | null;
-            badgeTitle: string | null;
-            yearsExperience: number | null;
-            patientsCount: number | null;
-            successRate: number | null;
-            specialties: string[];
-            rating: number;
-            reviewCount: number;
-            subscriptionActive: boolean;
-            subscriptionExpiry: Date | null;
-            schedule: import("@prisma/client/runtime/library").JsonValue | null;
-            workingDays: string[];
-            slotDurationMinutes: number;
-            maxPatientsPerDay: number | null;
-        };
-    } & {
-        id: string;
-        createdAt: Date;
-        doctorId: string;
-        patientId: string;
-        dateTime: Date;
-        symptoms: string | null;
-        isEmergency: boolean;
-        status: import("@prisma/client").$Enums.ReservationStatus;
-        queuePosition: number;
-        entryTime: Date | null;
-        exitTime: Date | null;
-        transferredFromId: string | null;
-        transferredToId: string | null;
-        cancelReason: string | null;
-        consultationNote: string | null;
+    private notificationsService;
+    constructor(prisma: PrismaService, notificationsService: NotificationsService);
+    findOne(id: string): Promise<any>;
+    create(userId: string, createReservationDto: any): Promise<any>;
+    findForDoctor(identifier: string, date?: string, isInternalId?: boolean): Promise<any>;
+    findPaginatedForDoctor(identifier: string, date?: string, page?: number, perPage?: number, nextOnly?: boolean): Promise<{
+        reservations: any;
+        total: number;
+        page: number;
+        perPage: number;
+        totalPages: number;
     }>;
-    findForDoctor(identifier: string, date?: string, isInternalId?: boolean): Promise<({
-        patient: {
-            user: {
-                uid: string;
-                email: string;
-                role: import("@prisma/client").$Enums.UserRole;
-                name: string;
-                mobile: string;
-                photoURL: string | null;
-                id: string;
-                fcmToken: string | null;
-                createdAt: Date;
-                updatedAt: Date;
-                resetPasswordOtp: string | null;
-                resetPasswordExpires: Date | null;
-            };
-        } & {
-            id: string;
-            userId: string;
-            dateOfBirth: string | null;
-            bloodType: string | null;
+    findForLab(labId: string, date?: string): Promise<any>;
+    findForPatient(userId: string): Promise<any>;
+    findPaginatedForPatient(userId: string, page?: number, perPage?: number): Promise<{
+        reservations: any;
+        total: number;
+        page: number;
+        perPage: number;
+        totalPages: number;
+    }>;
+    getLiveQueueForPatient(userId: string, requestedDoctorId?: string): Promise<{
+        clinicInfo: null;
+        queue: never[];
+        myPatientId: string;
+    } | {
+        clinicInfo: {
+            doctorName: string | undefined;
+            clinicName: string | null | undefined;
         };
-    } & {
-        id: string;
-        createdAt: Date;
-        doctorId: string;
-        patientId: string;
-        dateTime: Date;
-        symptoms: string | null;
-        isEmergency: boolean;
-        status: import("@prisma/client").$Enums.ReservationStatus;
-        queuePosition: number;
-        entryTime: Date | null;
-        exitTime: Date | null;
-        transferredFromId: string | null;
-        transferredToId: string | null;
-        cancelReason: string | null;
-        consultationNote: string | null;
-    })[]>;
-    findForPatient(userId: string): Promise<({
-        doctor: {
-            user: {
-                uid: string;
-                email: string;
-                role: import("@prisma/client").$Enums.UserRole;
-                name: string;
-                mobile: string;
-                photoURL: string | null;
-                id: string;
-                fcmToken: string | null;
-                createdAt: Date;
-                updatedAt: Date;
-                resetPasswordOtp: string | null;
-                resetPasswordExpires: Date | null;
-            };
-        } & {
+        queue: {
             id: string;
-            userId: string;
-            clinicName: string | null;
-            doctorName: string | null;
-            location: string | null;
-            specialization: string | null;
-            visitCost: number;
-            videoConsultCost: number | null;
-            inPersonCost: number | null;
-            about: string | null;
-            badgeTitle: string | null;
-            yearsExperience: number | null;
-            patientsCount: number | null;
-            successRate: number | null;
-            specialties: string[];
-            rating: number;
-            reviewCount: number;
-            subscriptionActive: boolean;
-            subscriptionExpiry: Date | null;
-            schedule: import("@prisma/client/runtime/library").JsonValue | null;
-            workingDays: string[];
-            slotDurationMinutes: number;
-            maxPatientsPerDay: number | null;
-        };
-    } & {
-        id: string;
-        createdAt: Date;
-        doctorId: string;
-        patientId: string;
-        dateTime: Date;
-        symptoms: string | null;
-        isEmergency: boolean;
-        status: import("@prisma/client").$Enums.ReservationStatus;
-        queuePosition: number;
-        entryTime: Date | null;
-        exitTime: Date | null;
-        transferredFromId: string | null;
-        transferredToId: string | null;
-        cancelReason: string | null;
-        consultationNote: string | null;
-    })[]>;
+            patientId: string;
+            queuePosition: number;
+            status: import("@prisma/client").$Enums.ReservationStatus;
+            expectedTime: Date | null;
+            dateTime: Date;
+            entryTime: Date | null;
+            exitTime: Date | null;
+            isEmergency: boolean;
+            durationMinutes: number | null;
+        }[];
+        myPatientId: string;
+    }>;
     updateStatus(id: string, statusData: any): Promise<{
         id: string;
-        createdAt: Date;
-        doctorId: string;
+        doctorId: string | null;
+        labId: string | null;
         patientId: string;
         dateTime: Date;
-        symptoms: string | null;
-        isEmergency: boolean;
         status: import("@prisma/client").$Enums.ReservationStatus;
         queuePosition: number;
+        selectedTest: string | null;
+        symptoms: string | null;
         entryTime: Date | null;
         exitTime: Date | null;
+        isEmergency: boolean;
         transferredFromId: string | null;
         transferredToId: string | null;
         cancelReason: string | null;
         consultationNote: string | null;
+        createdAt: Date;
+        expectedTime: Date | null;
+        tags: string[];
     }>;
-    findUpcomingForPatient(userId: string): Promise<({
-        patient: {
-            user: {
-                uid: string;
-                email: string;
-                role: import("@prisma/client").$Enums.UserRole;
-                name: string;
-                mobile: string;
-                photoURL: string | null;
-                id: string;
-                fcmToken: string | null;
-                createdAt: Date;
-                updatedAt: Date;
-                resetPasswordOtp: string | null;
-                resetPasswordExpires: Date | null;
-            };
-        } & {
-            id: string;
-            userId: string;
-            dateOfBirth: string | null;
-            bloodType: string | null;
-        };
-        doctor: {
-            user: {
-                uid: string;
-                email: string;
-                role: import("@prisma/client").$Enums.UserRole;
-                name: string;
-                mobile: string;
-                photoURL: string | null;
-                id: string;
-                fcmToken: string | null;
-                createdAt: Date;
-                updatedAt: Date;
-                resetPasswordOtp: string | null;
-                resetPasswordExpires: Date | null;
-            };
-        } & {
-            id: string;
-            userId: string;
-            clinicName: string | null;
-            doctorName: string | null;
-            location: string | null;
-            specialization: string | null;
-            visitCost: number;
-            videoConsultCost: number | null;
-            inPersonCost: number | null;
-            about: string | null;
-            badgeTitle: string | null;
-            yearsExperience: number | null;
-            patientsCount: number | null;
-            successRate: number | null;
-            specialties: string[];
-            rating: number;
-            reviewCount: number;
-            subscriptionActive: boolean;
-            subscriptionExpiry: Date | null;
-            schedule: import("@prisma/client/runtime/library").JsonValue | null;
-            workingDays: string[];
-            slotDurationMinutes: number;
-            maxPatientsPerDay: number | null;
-        };
-    } & {
-        id: string;
-        createdAt: Date;
-        doctorId: string;
-        patientId: string;
-        dateTime: Date;
-        symptoms: string | null;
-        isEmergency: boolean;
-        status: import("@prisma/client").$Enums.ReservationStatus;
-        queuePosition: number;
-        entryTime: Date | null;
-        exitTime: Date | null;
-        transferredFromId: string | null;
-        transferredToId: string | null;
-        cancelReason: string | null;
-        consultationNote: string | null;
-    }) | null>;
+    private shiftQueue;
+    findUpcomingForPatient(userId: string): Promise<any>;
+    private formatReservation;
 }

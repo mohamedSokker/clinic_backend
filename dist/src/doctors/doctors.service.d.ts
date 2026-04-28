@@ -2,15 +2,15 @@ import { PrismaService } from '../prisma/prisma.service';
 export declare class DoctorsService {
     private prisma;
     constructor(prisma: PrismaService);
-    findAll(specialization?: string, query?: string): Promise<({
+    findAll(specialization?: string, query?: string, lat?: number, lng?: number, radius?: number): Promise<({
         user: {
+            id: string;
+            name: string;
             uid: string;
             email: string;
             role: import("@prisma/client").$Enums.UserRole;
-            name: string;
             mobile: string;
             photoURL: string | null;
-            id: string;
             fcmToken: string | null;
             createdAt: Date;
             updatedAt: Date;
@@ -20,9 +20,11 @@ export declare class DoctorsService {
     } & {
         id: string;
         userId: string;
+        location: string | null;
+        latitude: number | null;
+        longitude: number | null;
         clinicName: string | null;
         doctorName: string | null;
-        location: string | null;
         specialization: string | null;
         visitCost: number;
         videoConsultCost: number | null;
@@ -44,13 +46,13 @@ export declare class DoctorsService {
     })[]>;
     findOne(id: string): Promise<{
         user: {
+            id: string;
+            name: string;
             uid: string;
             email: string;
             role: import("@prisma/client").$Enums.UserRole;
-            name: string;
             mobile: string;
             photoURL: string | null;
-            id: string;
             fcmToken: string | null;
             createdAt: Date;
             updatedAt: Date;
@@ -69,9 +71,11 @@ export declare class DoctorsService {
     } & {
         id: string;
         userId: string;
+        location: string | null;
+        latitude: number | null;
+        longitude: number | null;
         clinicName: string | null;
         doctorName: string | null;
-        location: string | null;
         specialization: string | null;
         visitCost: number;
         videoConsultCost: number | null;
@@ -94,9 +98,11 @@ export declare class DoctorsService {
     updateSchedule(uid: string, scheduleData: any): Promise<{
         id: string;
         userId: string;
+        location: string | null;
+        latitude: number | null;
+        longitude: number | null;
         clinicName: string | null;
         doctorName: string | null;
-        location: string | null;
         specialization: string | null;
         visitCost: number;
         videoConsultCost: number | null;
@@ -123,9 +129,11 @@ export declare class DoctorsService {
     }): Promise<{
         id: string;
         userId: string;
+        location: string | null;
+        latitude: number | null;
+        longitude: number | null;
         clinicName: string | null;
         doctorName: string | null;
-        location: string | null;
         specialization: string | null;
         visitCost: number;
         videoConsultCost: number | null;

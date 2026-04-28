@@ -24,12 +24,15 @@ const payments_module_1 = require("./payments/payments.module");
 const uploads_module_1 = require("./uploads/uploads.module");
 const auth_module_1 = require("./auth/auth.module");
 const mail_module_1 = require("./mail/mail.module");
+const labs_module_1 = require("./labs/labs.module");
+const schedule_1 = require("@nestjs/schedule");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            schedule_1.ScheduleModule.forRoot(),
             config_1.ConfigModule.forRoot({ isGlobal: true }),
             serve_static_1.ServeStaticModule.forRoot({
                 rootPath: (0, path_1.join)(__dirname, '..', '..', 'uploads'),
@@ -46,6 +49,7 @@ exports.AppModule = AppModule = __decorate([
             uploads_module_1.UploadsModule,
             auth_module_1.AuthModule,
             mail_module_1.MailModule,
+            labs_module_1.LabsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

@@ -20,10 +20,20 @@ export class NotificationsController {
   findAll(@Req() req: any) {
     return this.notificationsService.findAllForUser(req.user.uid);
   }
+  
+  @Post()
+  create(@Body() data: { userId: string; title: string; body: string; type: string; relatedId?: string }) {
+    return this.notificationsService.createNotification(data);
+  }
 
   @Patch(':id/read')
   markRead(@Param('id') id: string) {
     return this.notificationsService.markRead(id);
+  }
+
+  @Post('send')
+  send(@Body() fieldsData: { title: string; body: string; Tokens: string[] }) {
+    return this.notificationsService.sendMessage(fieldsData);
   }
 
   @Post('read-all')

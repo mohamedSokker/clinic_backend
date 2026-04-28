@@ -34,6 +34,23 @@ export class ReservationsController {
     return this.reservationsService.findForDoctor(req.user.uid, date, false);
   }
 
+  @Get('doctor/paginated')
+  findPaginatedForDoctor(
+    @Req() req: any,
+    @Query('date') date?: string,
+    @Query('page') page: string = '1',
+    @Query('per_page') perPage: string = '3',
+    @Query('next_only') nextOnly?: string,
+  ) {
+    return this.reservationsService.findPaginatedForDoctor(
+      req.user.uid,
+      date,
+      parseInt(page),
+      parseInt(perPage),
+      nextOnly === 'true',
+    );
+  }
+
   @Get('patient')
   findForPatient(@Req() req: any) {
     return this.reservationsService.findForPatient(req.user.uid);
@@ -42,6 +59,37 @@ export class ReservationsController {
   @Get('patient/upcoming')
   findUpcomingForPatient(@Req() req: any) {
     return this.reservationsService.findUpcomingForPatient(req.user.uid);
+  }
+
+  @Get('patient/paginated')
+  findPaginatedForPatient(
+    @Req() req: any,
+    @Query('page') page: string = '1',
+    @Query('per_page') perPage: string = '3',
+  ) {
+    return this.reservationsService.findPaginatedForPatient(
+      req.user.uid,
+      parseInt(page),
+      parseInt(perPage),
+    );
+  }
+
+  @Get('patient/live-queue')
+  getLiveQueueForPatient(
+    @Req() req: any,
+    @Query('doctorId') doctorId?: string,
+  ) {
+    return this.reservationsService.getLiveQueueForPatient(req.user.uid, doctorId);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.reservationsService.findOne(id);
+  }
+
+  @Get('lab/:labId')
+  findForLab(@Param('labId') labId: string, @Query('date') date?: string) {
+    return this.reservationsService.findForLab(labId, date);
   }
 
   @Patch(':id/status')

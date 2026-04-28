@@ -24,8 +24,14 @@ let NotificationsController = class NotificationsController {
     findAll(req) {
         return this.notificationsService.findAllForUser(req.user.uid);
     }
+    create(data) {
+        return this.notificationsService.createNotification(data);
+    }
     markRead(id) {
         return this.notificationsService.markRead(id);
+    }
+    send(fieldsData) {
+        return this.notificationsService.sendMessage(fieldsData);
     }
     markAllRead(req) {
         return this.notificationsService.markAllRead(req.user.uid);
@@ -40,12 +46,26 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], NotificationsController.prototype, "findAll", null);
 __decorate([
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], NotificationsController.prototype, "create", null);
+__decorate([
     (0, common_1.Patch)(':id/read'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], NotificationsController.prototype, "markRead", null);
+__decorate([
+    (0, common_1.Post)('send'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], NotificationsController.prototype, "send", null);
 __decorate([
     (0, common_1.Post)('read-all'),
     __param(0, (0, common_1.Req)()),

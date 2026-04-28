@@ -37,6 +37,27 @@ let UsersController = class UsersController {
     updateProfile(req, updateData) {
         return this.usersService.update(req.user.uid, updateData);
     }
+    updateFcmToken(req, fcmToken) {
+        return this.usersService.updateFcmToken(req.user.uid, fcmToken);
+    }
+    getPatientActivity(req, page = '1', perPage = '10') {
+        return this.usersService.getPatientActivity(req.user.uid, parseInt(page), parseInt(perPage));
+    }
+    getPatientAnalysis(req, page = '1', perPage = '3') {
+        return this.usersService.getPaginatedAnalysis(req.user.uid, parseInt(page), parseInt(perPage));
+    }
+    deleteAnalysis(req, fileId) {
+        return this.usersService.deleteAnalysisFile(req.user.uid, fileId);
+    }
+    getPatientFullProfile(patientId) {
+        return this.usersService.getPatientFullProfile(patientId);
+    }
+    getPatientActivityByDoctor(patientId, page = '1', perPage = '10') {
+        return this.usersService.getPatientActivityByPatientId(patientId, parseInt(page), parseInt(perPage));
+    }
+    getPatientAnalysisByDoctor(patientId, page = '1', perPage = '10') {
+        return this.usersService.getPaginatedAnalysisByPatientId(patientId, parseInt(page), parseInt(perPage));
+    }
 };
 exports.UsersController = UsersController;
 __decorate([
@@ -65,6 +86,72 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "updateProfile", null);
+__decorate([
+    (0, common_1.Patch)('fcm-token'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)('fcmToken')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "updateFcmToken", null);
+__decorate([
+    (0, common_1.Get)('patient/activity'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('per_page')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, String]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "getPatientActivity", null);
+__decorate([
+    (0, common_1.Get)('patient/analysis'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('per_page')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, String]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "getPatientAnalysis", null);
+__decorate([
+    (0, common_1.Delete)('patient/analysis/:fileId'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('fileId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "deleteAnalysis", null);
+__decorate([
+    (0, common_1.Get)('patient/:patientId/full-profile'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Param)('patientId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "getPatientFullProfile", null);
+__decorate([
+    (0, common_1.Get)('patient/:patientId/activity'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Param)('patientId')),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('per_page')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "getPatientActivityByDoctor", null);
+__decorate([
+    (0, common_1.Get)('patient/:patientId/analysis'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Param)('patientId')),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('per_page')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "getPatientAnalysisByDoctor", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])
