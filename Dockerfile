@@ -26,14 +26,17 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
+# Pre-create uploads directory and set ownership
+RUN mkdir -p uploads && chown -R node:node /app
+
 # Install only production dependencies
-COPY package*.json ./
+COPY --chown=node:node package*.json ./
 RUN npm ci --only=production
 
 # Copy the built application and Prisma artifacts
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/prisma ./prisma
+COPY --from=builder --chown=node:node /app/dist ./dist
+COPY --from=builder --chown=node:node /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder --chown=node:node /app/prisma ./prisma
 
 EXPOSE 3000
 
