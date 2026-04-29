@@ -15,6 +15,13 @@ export declare class ReservationsService {
         totalPages: number;
     }>;
     findForLab(labId: string, date?: string): Promise<any>;
+    findPaginatedForLab(identifier: string, date?: string, page?: number, perPage?: number, nextOnly?: boolean): Promise<{
+        reservations: any;
+        total: number;
+        page: number;
+        perPage: number;
+        totalPages: number;
+    }>;
     findForPatient(userId: string): Promise<any>;
     findPaginatedForPatient(userId: string, page?: number, perPage?: number): Promise<{
         reservations: any;
@@ -48,7 +55,6 @@ export declare class ReservationsService {
     }>;
     updateStatus(id: string, statusData: any): Promise<{
         id: string;
-        createdAt: Date;
         doctorId: string | null;
         labId: string | null;
         patientId: string;
@@ -64,6 +70,7 @@ export declare class ReservationsService {
         transferredToId: string | null;
         cancelReason: string | null;
         consultationNote: string | null;
+        createdAt: Date;
         expectedTime: Date | null;
         tags: string[];
     }>;

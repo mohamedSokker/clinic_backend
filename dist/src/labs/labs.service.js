@@ -124,20 +124,10 @@ let LabsService = class LabsService {
                 progress: 100,
             })),
             appointments: lab.reservations.map((res) => ({
-                id: res.id,
-                time: res.dateTime.toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                }),
-                date: res.dateTime.toLocaleDateString([], {
-                    month: 'short',
-                    day: 'numeric',
-                }),
+                ...res,
                 patientName: res.patient.user.name,
                 patientPhoto: res.patient.user.photoURL,
-                patientId: res.patient.id,
                 testType: res.selectedTest || 'General Analysis',
-                status: res.status,
             })),
         };
     }

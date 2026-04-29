@@ -47,14 +47,62 @@ export declare class LabsController {
             progress: number;
         }[];
         appointments: {
-            id: string;
-            time: string;
-            date: string;
             patientName: string;
             patientPhoto: string | null;
-            patientId: string;
             testType: string;
+            patient: {
+                user: {
+                    id: string;
+                    name: string;
+                    uid: string;
+                    email: string;
+                    role: import("@prisma/client").$Enums.UserRole;
+                    mobile: string;
+                    photoURL: string | null;
+                    fcmToken: string | null;
+                    createdAt: Date;
+                    updatedAt: Date;
+                    resetPasswordOtp: string | null;
+                    resetPasswordExpires: Date | null;
+                };
+            } & {
+                id: string;
+                userId: string;
+                location: string | null;
+                latitude: number | null;
+                longitude: number | null;
+                dateOfBirth: string | null;
+                bloodType: string | null;
+                bloodPressure: string | null;
+                heartRate: string | null;
+                glucose: string | null;
+                spo2: string | null;
+                age: string | null;
+                gender: string | null;
+                weight: number | null;
+                height: number | null;
+                allergies: string[];
+                chronicConditions: string[];
+            };
+            id: string;
+            createdAt: Date;
+            doctorId: string | null;
+            labId: string | null;
+            patientId: string;
+            dateTime: Date;
             status: import("@prisma/client").$Enums.ReservationStatus;
+            queuePosition: number;
+            selectedTest: string | null;
+            symptoms: string | null;
+            entryTime: Date | null;
+            exitTime: Date | null;
+            isEmergency: boolean;
+            transferredFromId: string | null;
+            transferredToId: string | null;
+            cancelReason: string | null;
+            consultationNote: string | null;
+            expectedTime: Date | null;
+            tags: string[];
         }[];
     }>;
     getQueue(req: any): Promise<{

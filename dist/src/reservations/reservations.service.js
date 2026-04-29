@@ -87,16 +87,17 @@ let ReservationsService = class ReservationsService {
             else if (labId) {
                 await tx.$executeRaw `SELECT id FROM "Lab" WHERE id = ${labId} FOR UPDATE`;
             }
-            if (doctorId && dateTime) {
+            if ((doctorId || labId) && dateTime) {
                 const existing = await tx.reservation.findFirst({
                     where: {
-                        doctorId,
+                        doctorId: doctorId || undefined,
+                        labId: labId || undefined,
                         dateTime: new Date(dateTime),
-                        status: { notIn: ['cancelled', 'no_show'] },
+                        status: { notIn: ["cancelled", "no_show"] },
                     },
                 });
                 if (existing) {
-                    throw new common_1.BadRequestException('This time slot is already reserved.');
+                    throw new common_1.BadRequestException("This time slot is already reserved.");
                 }
             }
             const date = new Date(dateTime);
@@ -305,6 +306,46 @@ let ReservationsService = class ReservationsService {
                 patient: { include: { user: true } },
             },
         }));
+    }
+    async findPaginatedForLab(identifier, date, page = 1, perPage = 3, nextOnly = false) {
+        const lab = await this.prisma.lab.findFirst({
+            where: { user: { uid: identifier } },
+        });
+        if (!lab)
+            throw new common_1.NotFoundException('Lab record not found');
+        const statusFilter = nextOnly
+            ? { in: ['pending', 'confirmed', 'waiting', 'inside'] }
+            : { notIn: ['cancelled', 'no_show'] };
+        const where = {
+            labId: lab.id,
+            status: statusFilter,
+        };
+        if (date) {
+            const d = new Date(date);
+            where.dateTime = {
+                gte: new Date(d.setHours(0, 0, 0, 0)),
+                lte: new Date(d.setHours(23, 59, 59, 999)),
+            };
+        }
+        const [reservations, total] = await Promise.all([
+            this.prisma.reservation.findMany({
+                where,
+                orderBy: { dateTime: 'asc' },
+                include: {
+                    patient: { include: { user: true } },
+                },
+                skip: (page - 1) * perPage,
+                take: perPage,
+            }),
+            this.prisma.reservation.count({ where }),
+        ]);
+        return {
+            reservations: this.formatReservation(reservations),
+            total,
+            page,
+            perPage,
+            totalPages: Math.ceil(total / perPage),
+        };
     }
     async findForPatient(userId) {
         const patient = await this.prisma.patient.findFirst({

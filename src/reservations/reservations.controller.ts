@@ -51,6 +51,23 @@ export class ReservationsController {
     );
   }
 
+  @Get('lab/paginated')
+  findPaginatedForLab(
+    @Req() req: any,
+    @Query('date') date?: string,
+    @Query('page') page: string = '1',
+    @Query('per_page') perPage: string = '3',
+    @Query('next_only') nextOnly?: string,
+  ) {
+    return this.reservationsService.findPaginatedForLab(
+      req.user.uid,
+      date,
+      parseInt(page),
+      parseInt(perPage),
+      nextOnly === 'true',
+    );
+  }
+
   @Get('patient')
   findForPatient(@Req() req: any) {
     return this.reservationsService.findForPatient(req.user.uid);

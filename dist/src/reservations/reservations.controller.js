@@ -33,6 +33,9 @@ let ReservationsController = class ReservationsController {
     findPaginatedForDoctor(req, date, page = '1', perPage = '3', nextOnly) {
         return this.reservationsService.findPaginatedForDoctor(req.user.uid, date, parseInt(page), parseInt(perPage), nextOnly === 'true');
     }
+    findPaginatedForLab(req, date, page = '1', perPage = '3', nextOnly) {
+        return this.reservationsService.findPaginatedForLab(req.user.uid, date, parseInt(page), parseInt(perPage), nextOnly === 'true');
+    }
     findForPatient(req) {
         return this.reservationsService.findForPatient(req.user.uid);
     }
@@ -84,6 +87,17 @@ __decorate([
     __metadata("design:paramtypes", [Object, String, String, String, String]),
     __metadata("design:returntype", void 0)
 ], ReservationsController.prototype, "findPaginatedForDoctor", null);
+__decorate([
+    (0, common_1.Get)('lab/paginated'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Query)('date')),
+    __param(2, (0, common_1.Query)('page')),
+    __param(3, (0, common_1.Query)('per_page')),
+    __param(4, (0, common_1.Query)('next_only')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, String, String, String]),
+    __metadata("design:returntype", void 0)
+], ReservationsController.prototype, "findPaginatedForLab", null);
 __decorate([
     (0, common_1.Get)('patient'),
     __param(0, (0, common_1.Req)()),
