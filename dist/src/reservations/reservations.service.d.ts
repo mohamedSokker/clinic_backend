@@ -55,6 +55,7 @@ export declare class ReservationsService {
     }>;
     updateStatus(id: string, statusData: any): Promise<{
         id: string;
+        createdAt: Date;
         doctorId: string | null;
         labId: string | null;
         patientId: string;
@@ -70,7 +71,6 @@ export declare class ReservationsService {
         transferredToId: string | null;
         cancelReason: string | null;
         consultationNote: string | null;
-        createdAt: Date;
         expectedTime: Date | null;
         tags: string[];
     }>;
